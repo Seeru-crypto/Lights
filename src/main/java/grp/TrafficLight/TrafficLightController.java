@@ -32,6 +32,15 @@ public class TrafficLightController {
         log.info("REST request to create light");
         return ResponseEntity.ok(trafficService.createNewTrafficLight(name, delay ));
     }
+
+    @DeleteMapping
+    public void delete(
+            @RequestParam(name = "id") int threadId
+    ) {
+
+        log.info("REST request to create light ", threadId);
+        trafficService.deleteThread(threadId);
+    }
 }
 
 

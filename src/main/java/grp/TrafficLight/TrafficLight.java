@@ -16,11 +16,14 @@ public class TrafficLight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
-    private Long id;
+    private Long lightId;
 
-    private String name;
+    private String lightName;
 
     private boolean isEnabled;
 
+    // in seconds
     private int delay;
+
+    private LightColor lightColor = LightColor.RED;
 }
