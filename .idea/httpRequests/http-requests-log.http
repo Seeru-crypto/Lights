@@ -1,3 +1,42 @@
+GET http://localhost:8080/ws
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.10)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-02-19T173312.404.json
+
+###
+
+POST http://localhost:8080/lights?name=fourth&delay=10000
+Content-Length: 0
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.10)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-02-19T172813.200.json
+
+###
+
+POST http://localhost:8080/lights?name=third&delay=5000
+Content-Length: 0
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.10)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-02-19T172806.200.json
+
+###
+
+POST http://localhost:8080/lights?name=fist&delay=3000
+Content-Length: 0
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.10)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-02-19T172800.200.json
+
+###
+
 GET http://localhost:8080/lights
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.10)

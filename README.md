@@ -3,8 +3,6 @@
 The main purpose of this micro project is to learn java threads and concurrency and websockets in java 
 and custom logging.
 
-
-
 ## main features
 
 ### Traffic light creation

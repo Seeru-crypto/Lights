@@ -12,7 +12,7 @@ GET localhost:8080/lights
 
 
 ### Create Light
-POST localhost:8080/lights?name=second&delay=3000
+POST localhost:8080/lights?name=fourth&delay=10000
 
 <> 2025-02-18T232210.200.json
 <> 2025-02-18T231855.200.json
@@ -28,3 +28,12 @@ POST localhost:8080/lights?name=second&delay=3000
 
 ### Delete
 DELETE localhost:8080/lights?id=69
+
+
+
+
+### WEbsocket test
+GET ws://localhost:8080/ws
+
+
+
