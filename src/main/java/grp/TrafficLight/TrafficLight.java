@@ -26,4 +26,6 @@ public class TrafficLight {
     private int delay;
 
     private LightColor lightColor = LightColor.RED;
+
+    private LightDirection lightDirection = LightDirection.GREENING;
 }

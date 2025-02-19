@@ -27,4 +27,4 @@ POST localhost:8080/lights?name=second&delay=3000
 
 
 ### Delete
-DELETE localhost:8080/lights?id=68
+DELETE localhost:8080/lights?id=69
