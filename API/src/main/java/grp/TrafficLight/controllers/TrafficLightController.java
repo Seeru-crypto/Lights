@@ -1,5 +1,7 @@
-package grp.TrafficLight;
+package grp.TrafficLight.controllers;
 
+import grp.TrafficLight.TrafficLight;
+import grp.TrafficLight.TrafficService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

@@ -12,7 +12,7 @@ GET localhost:8080/lights
 
 
 ### Create Light
-POST localhost:8080/lights?name=fast_boy&delay=1000
+POST localhost:8080/lights?name=mid_boy&delay=5000
 
 <> 2025-02-18T232210.200.json
 <> 2025-02-18T231855.200.json

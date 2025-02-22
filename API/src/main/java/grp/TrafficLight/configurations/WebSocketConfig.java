@@ -20,4 +20,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer  {
         registry.addEndpoint("/wsServer")
                 .setAllowedOrigins("http://localhost:5173", "http://localhost:8080");
     }
+
 }

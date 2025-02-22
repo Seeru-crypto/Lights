@@ -1,12 +1,23 @@
 package grp.TrafficLight;
 
+import grp.TrafficLight.controllers.GreetingController;
+import grp.TrafficLight.models.TrafficLightBroadcastMessage;
 import lombok.extern.slf4j.Slf4j;
+
+import java.time.LocalTime;
+
+import static grp.TrafficLight.LightColor.RED;
+import static grp.TrafficLight.LightColor.YELLOW;
+import static grp.TrafficLight.LightDirection.GREENING;
+import static grp.TrafficLight.LightDirection.REDDENING;
 
 @Slf4j
 public class TrafficWrapper extends Thread {
     private TrafficLight _trafficLight;
+    private final GreetingController _greetingControllre;
 
-    public TrafficWrapper(TrafficLight trafficLight) {
+    public TrafficWrapper(TrafficLight trafficLight, GreetingController greetingController) {
+        this._greetingControllre = greetingController;
         this._trafficLight = trafficLight;
     }
 
@@ -14,7 +25,7 @@ public class TrafficWrapper extends Thread {
         _trafficLight.isEnabled();
 
         while (_trafficLight.isEnabled()) {
-            if (_trafficLight.getLightDirection() == LightDirection.REDDENING) {
+            if (_trafficLight.getLightDirection() == REDDENING) {
                 going_red();
             }
             else {
@@ -27,17 +38,11 @@ public class TrafficWrapper extends Thread {
     private void going_red() {
         switch (_trafficLight.getLightColor()) {
             case GREEN:
-                log(" 🚦 YELLOW - SLOW DOWN!");
-                _trafficLight.setLightColor(LightColor.YELLOW);
-                sleepFor(_trafficLight.getDelay());
+                changeLight(YELLOW, "🚦 YELLOW - SLOW DOWN!", REDDENING);
                 break;
 
             case YELLOW:
-                log("🚦 RED - STOP!");
-                _trafficLight.setLightColor(LightColor.RED);
-                _trafficLight.setLightDirection(LightDirection.GREENING);
-
-                sleepFor(_trafficLight.getDelay());
+                changeLight(RED, "🚦 RED - STOP!", GREENING);
                 break;
         }
     }
@@ -45,19 +50,27 @@ public class TrafficWrapper extends Thread {
     private void going_green() {
         switch (_trafficLight.getLightColor()) {
             case RED:
-                log(" 🚦 YELLOW - get ready to go");
-                _trafficLight.setLightColor(LightColor.YELLOW);
-                sleepFor(_trafficLight.getDelay());
+                changeLight(YELLOW, "🚦 YELLOW - get ready to go", GREENING);
                 break;
 
             case YELLOW:
-                log("  GREEN - Go");
-                _trafficLight.setLightColor(LightColor.GREEN);
-                _trafficLight.setLightDirection(LightDirection.REDDENING);
-
-                sleepFor(_trafficLight.getDelay());
+                changeLight(LightColor.GREEN, "🚦 GREEN - Go", REDDENING);
                 break;
         }
+    }
+
+    private void changeLight(LightColor lightColor, String status, LightDirection lightDirection) {
+        log(status);
+        TrafficLightBroadcastMessage msg = new TrafficLightBroadcastMessage()
+                .setId(_trafficLight.getLightId())
+                .setTimeSent(LocalTime.now())
+                .setName(_trafficLight.getLightName())
+                .setStatus(status);
+        _greetingControllre.sendTrafficLightUpdate(msg);
+        _trafficLight.setLightColor(lightColor);
+        _trafficLight.setLightDirection(lightDirection);
+
+        sleepFor(_trafficLight.getDelay());
     }
 
     public TrafficLight getTrafficLight() {

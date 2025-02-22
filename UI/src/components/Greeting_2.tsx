@@ -1,13 +1,24 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {StompSessionProvider, useStompClient, useSubscription} from "react-stomp-hooks";
 
+interface ITrafficBroadCast {
+    id: string,
+    status: string,
+    timeSent: string,
+    name: string
+}
+
 const Greeting_2 = () => {
-    //Public API that will echo messages sent to it back to the client
     const API_PATH: string = "ws://localhost:8080/wsServer";
     const GET_SLUG = "/topic/greetings"
     const POST_SLUG = "/app/hello"
-    const [messages, setMessages] = useState<string[]>([])
-    const [lastMessage, setLastMessage] = useState("No message received yet");
+    const [lights, setLights] = useState<ITrafficBroadCast[]>([]);
+
+    function updateLightList(signal: ITrafficBroadCast) {
+        const newList = lights.filter(a => a.id !== signal.id)
+        newList.push(signal);
+        setLights(newList)
+    }
 
 
     function SubscribingComponent() {
@@ -18,23 +29,15 @@ const Greeting_2 = () => {
         //You can also supply an array as the first parameter, which will subscribe to all destinations in the array
         useSubscription(GET_SLUG, (message) => {
             // console.log("new message ", message)
-            setLastMessage(parseTime(message.body))
-            const test: string[] = messages;
-            test.push(parseTime(message.body))
-            setMessages(test)
+            const data = JSON.parse(message.body) as ITrafficBroadCast;
+            console.log(`update for ${data.name}`)
+            updateLightList(data);
         });
 
-        return <div>Last Message: {lastMessage}</div>;
+        return <div></div>;
     }
 
-    useEffect(() => {
-        console.log({messages})
-    }, [messages])
-
     function SendingMessages() {
-        //Get Instance of StompClient
-        //This is the StompCLient from @stomp/stompjs
-        //Note: This will be undefined if the client is currently not connected
         const stompClient = useStompClient();
 
         const sendMessage = () => {
@@ -52,11 +55,6 @@ const Greeting_2 = () => {
         return <button onClick={sendMessage}>Send Message</button>;
     }
 
-    function parseTime(time: string) : string {
-        console.log( {time})
-        return time.slice(0, 24)
-    }
-
     return (
         //Initialize Stomp connection, will use SockJS for http(s) and WebSocket for ws(s)
         //The Connection can be used by all child components via the hooks or hocs.
@@ -69,8 +67,8 @@ const Greeting_2 = () => {
 
             <ul>
                 {
-                    messages.map((entry, index) => (
-                        <li key={index}>{entry}</li>
+                    lights.map((entry) => (
+                        <li key={entry.id}>{entry.name} has status {entry.status}</li>
                     ))
                 }
             </ul>
