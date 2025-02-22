@@ -10,13 +10,14 @@ interface ITrafficBroadCast {
 
 const Greeting_2 = () => {
     const API_PATH: string = "ws://localhost:8080/wsServer";
-    const GET_SLUG = "/topic/greetings"
+    const GET_SLUG = "/get/lights"
     const POST_SLUG = "/app/hello"
     const [lights, setLights] = useState<ITrafficBroadCast[]>([]);
 
     function updateLightList(signal: ITrafficBroadCast) {
         const newList = lights.filter(a => a.id !== signal.id)
         newList.push(signal);
+        newList.sort((a, b) => a.name.localeCompare(b.name))
         setLights(newList)
     }
 
@@ -28,7 +29,6 @@ const Greeting_2 = () => {
         //If the STOMP connection itself is lost they are however restored on reconnect.
         //You can also supply an array as the first parameter, which will subscribe to all destinations in the array
         useSubscription(GET_SLUG, (message) => {
-            // console.log("new message ", message)
             const data = JSON.parse(message.body) as ITrafficBroadCast;
             console.log(`update for ${data.name}`)
             updateLightList(data);

@@ -1,6 +1,6 @@
 package grp.TrafficLight;
 
-import grp.TrafficLight.controllers.GreetingController;
+import grp.TrafficLight.controllers.WebSocketController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TrafficService {
     protected final Repository repository;
-    private final GreetingController greetingController;
+    private final WebSocketController webSocketController;
 
     public TrafficLight createNewTrafficLight(String name, int delay) {
 
@@ -25,7 +25,7 @@ public class TrafficService {
 
         repository.save(trafficLight);
 
-        TrafficWrapper trafficWrapper = new TrafficWrapper(trafficLight, greetingController);
+        TrafficWrapper trafficWrapper = new TrafficWrapper(trafficLight, webSocketController);
         trafficWrapper.start();
         log.info("created new wrapper with ID " + trafficWrapper.threadId());
         return trafficLight;

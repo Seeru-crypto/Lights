@@ -1,6 +1,6 @@
 package grp.TrafficLight;
 
-import grp.TrafficLight.controllers.GreetingController;
+import grp.TrafficLight.controllers.WebSocketController;
 import grp.TrafficLight.models.TrafficLightBroadcastMessage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,10 +14,10 @@ import static grp.TrafficLight.LightDirection.REDDENING;
 @Slf4j
 public class TrafficWrapper extends Thread {
     private TrafficLight _trafficLight;
-    private final GreetingController _greetingControllre;
+    private final WebSocketController _greetingControllre;
 
-    public TrafficWrapper(TrafficLight trafficLight, GreetingController greetingController) {
-        this._greetingControllre = greetingController;
+    public TrafficWrapper(TrafficLight trafficLight, WebSocketController webSocketController) {
+        this._greetingControllre = webSocketController;
         this._trafficLight = trafficLight;
     }
 

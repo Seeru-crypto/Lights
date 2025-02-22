@@ -13,31 +13,34 @@ import java.time.LocalTime;
 
 @Slf4j
 @Controller
-public class GreetingController {
+public class WebSocketController {
 
     private SimpMessagingTemplate _messagingTemplate;
 
-    public GreetingController(SimpMessagingTemplate messagingTemplate) {
+    public WebSocketController(SimpMessagingTemplate messagingTemplate) {
         this._messagingTemplate =  messagingTemplate;
     }
 
     public void sendTrafficLightUpdate(TrafficLightBroadcastMessage message) {
-        _messagingTemplate.convertAndSend("/topic/greetings", message);
+        _messagingTemplate.convertAndSend("/get/lights", message);
     }
 
     @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public String greeting(String message) throws Exception {
+    @SendTo("/get/lights")
+    public TrafficLightBroadcastMessage greeting(String message) throws Exception {
         log.info("incomming websocket request with " + message);
         Thread.sleep(1000); // simulated delay
 
-        String res = "Hello, " + message + " " + LocalTime.now();
+        TrafficLightBroadcastMessage res = new TrafficLightBroadcastMessage()
+                .setId(0L)
+                .setStatus("TEST")
+                .setName(message)
+                .setTimeSent(LocalTime.now());
         return res;
     }
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) throws InterruptedException {
         log.info("New WebSocket connection established.");
-        _messagingTemplate.convertAndSend("/topic/greetings", "Welcome to the WebSocket server!");
     }
 }

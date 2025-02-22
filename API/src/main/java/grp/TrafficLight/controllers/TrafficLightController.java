@@ -31,7 +31,7 @@ public class TrafficLightController {
             @RequestParam(name = "name") String name
     ) {
 
-        log.info("REST request to create light");
+        log.info("REST request to create light with delay: "+  delay + " and name "+name);
         return ResponseEntity.ok(trafficService.createNewTrafficLight(name, delay ));
     }
 

@@ -12,18 +12,13 @@ GET localhost:8080/lights
 
 
 ### Create Light
+POST localhost:8080/lights?name=slow_boy&delay=10000
+
+### Create Light 2
 POST localhost:8080/lights?name=mid_boy&delay=5000
 
-<> 2025-02-18T232210.200.json
-<> 2025-02-18T231855.200.json
-<> 2025-02-18T231446.200.json
-<> 2025-02-18T231424.200.json
-<> 2025-02-18T231046.200.json
-<> 2025-02-18T230505.200.json
-<> 2025-02-18T225629.200.json
-<> 2025-02-18T225421.200.json
-<> 2025-02-18T224841.200.json
-<> 2025-02-18T205850.200.json
+### Create Light 2
+POST localhost:8080/lights?name=fast_boy&delay=1000
 
 
 ### Delete
