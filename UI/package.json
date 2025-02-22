@@ -12,6 +12,7 @@
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-stomp-hooks": "^3.0.1",
     "react-use-websocket": "^3.0.0"
   },
   "devDependencies": {
