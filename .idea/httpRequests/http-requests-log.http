@@ -4,6 +4,36 @@ Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.10)
 Accept-Encoding: br,deflate,gzip,x-gzip
 
+<> 2025-02-22T225236.200.json
+
+###
+
+POST http://localhost:8080/lights?name=mid_boy&delay=5000
+Content-Length: 0
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.10)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-02-22T225231.200.json
+
+###
+
+POST http://localhost:8080/lights?name=fast_boy&delay=1000
+Content-Length: 0
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.10)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-02-22T225228.200.json
+
+###
+
+POST http://localhost:8080/lights?name=slow_boy&delay=10000
+Content-Length: 0
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.10)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
 <> 2025-02-22T224318.200.json
 
 ###
@@ -449,34 +479,6 @@ DELETE http://localhost:8080/lights?id=69
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.10)
 Accept-Encoding: br,deflate,gzip,x-gzip
-
-###
-
-POST http://localhost:8080/lights?name=second&delay=3000
-Content-Length: 0
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.10)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-02-19T172318.200.json
-
-###
-
-GET http://localhost:8080/lights
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.10)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-02-18T232418.200.json
-
-###
-
-GET http://localhost:8080/lights
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.10)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-02-18T232308.200.json
 
 ###
 
