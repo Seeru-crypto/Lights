@@ -41,3 +41,15 @@
 .read-the-docs {
   color: #888;
 }
+
+.commentary_container {
+  padding-top: 8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.commentary {
+  max-width: 40vw;
+}

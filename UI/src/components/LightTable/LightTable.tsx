@@ -124,7 +124,7 @@ const LightTable = () => {
                 rowClassName={styles.row}
                 pagination={false}
                 dataSource={lights}
-                columns={columns} />;
+                columns={columns} />
         </div>
 
     )

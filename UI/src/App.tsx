@@ -24,7 +24,6 @@ function App() {
                 url={API_PATH}
                 onConnect={() => onConnect()}
             >
-
                 <div>
                     <img src={viteLogo} className="logo" alt="Vite logo"/>
                     <img src={reactLogo} className="logo react" alt="React logo"/>
@@ -32,6 +31,14 @@ function App() {
                 <h1>Traffic Lights</h1>
                 <LightForm isDisabled={isDisabled}/>
                 <LightTable/>
+                <article className="commentary_container">
+                    <h2>What´s going on here?</h2>
+                    <ul className="commentary">
+                        <li>When a light is created a HTTP post is sent to API, where a client entity and new thread is created.</li>
+                        <li>The thread loops according to its own logic and if a change occurs, it is broadcast to subscribers via STOMP message</li>
+                        <li>Due to the thread logic every light is completely independant from each other. In theory a race condition might occur in UI if a update and DELETE occurs at the same time, but i have not been able to create it.</li>
+                    </ul>
+                </article>
             </StompSessionProvider>
 
         </div>
