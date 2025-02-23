@@ -14,6 +14,7 @@ import java.util.List;
 @Slf4j
 @Validated
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequiredArgsConstructor
 @RequestMapping(path = "/lights")
 public class TrafficLightController {
@@ -35,12 +36,10 @@ public class TrafficLightController {
         return ResponseEntity.ok(trafficService.createNewTrafficLight(name, delay ));
     }
 
-
     @DeleteMapping(("/{id}"))
-    public void delete( @PathVariable Long id) {
+    public ResponseEntity<Long> delete( @PathVariable Long id) {
         log.info("REST request to delete light  with id "+ id);
         trafficService.deleteLight(id);
+        return ResponseEntity.ok(id);
     }
 }
-
-

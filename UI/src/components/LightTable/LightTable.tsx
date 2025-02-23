@@ -35,6 +35,11 @@ const LightTable = () => {
         setLights(newList)
     }
 
+    function removeSignalFromLightList(lightId: string) {
+        const newList = lights.filter(a => a.id !== lightId)
+        setLights(newList);
+    }
+
     SubscribingComponent();
 
     async function deleteLight(id: string) {
@@ -45,9 +50,14 @@ const LightTable = () => {
         console.log({url})
 
         const response = await fetch(url, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
         });
-        console.log({response})
+
+        const data = await response.json();
+        removeSignalFromLightList(data)
     }
 
     const columns = [
