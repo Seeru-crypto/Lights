@@ -1,26 +1,25 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Button, Input} from "antd";
 import styles from "./LightForm.module.scss"
 
-const LightForm = () => {
+
+interface ILightForm {
+    isDisabled: boolean;
+}
+
+const LightForm = ({isDisabled}: ILightForm) => {
     const [lightName, setLightName] = useState("");
     const [lightDelay, setLightDelay] = useState("0");
     const API_PATH = "http://localhost:8080/lights"
 
     async function createLight() {
-
         const url = `${API_PATH}?name=${lightName}&delay=${lightDelay} `
 
-        const response = await fetch(url, {
+        await fetch(url, {
             method: "POST",
             body: JSON.stringify({}),
         });
-        console.log({response})
     }
-
-    useEffect(() => {
-        console.log({lightDelay}, {lightName})
-    }, [lightDelay, lightName])
 
     function setDelay(input: string) {
         if (input == "") {
@@ -41,20 +40,21 @@ const LightForm = () => {
     }
 
     return (
-        <div>
-            <h2>light form</h2>
-            <div className={styles.container}>
-                <div>
-                    <Input onChange={(e) => setLightName(e.target.value)} placeholder="light name" />
+        <div className={styles.container}>
+            <div className={styles.input_container}>
+                <h3>Create new light</h3>
+                <div className={styles.inputGrp}>
+                    <label className={styles.inputLabel} htmlFor="light_name">Light name</label>
+                    <Input name={"light_name"} disabled={isDisabled} onChange={(e) => setLightName(e.target.value)} placeholder="light name" />
                 </div>
 
-                <div>
-                    <Input onChange={(e) => setDelay(e.target.value)} placeholder="light delay (s)" />
+                <div className={styles.inputGrp}>
+                    <label className={styles.inputLabel} htmlFor="light_delay">Light delay</label>
+                    <Input name={"light_delay"} disabled={isDisabled} onChange={(e) => setDelay(e.target.value)} placeholder="light delay (s)" />
                 </div>
 
             </div>
-            <Button onClick={() => submitForm()}>submit</Button>
-
+            <Button disabled={isDisabled} onClick={() => submitForm()}>submit</Button>
         </div>
     )
 }

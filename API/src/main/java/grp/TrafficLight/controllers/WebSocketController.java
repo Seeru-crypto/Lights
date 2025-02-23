@@ -12,6 +12,8 @@ import org.springframework.web.socket.messaging.SessionConnectedEvent;
 
 import java.time.LocalTime;
 
+import static grp.TrafficLight.LightColor.RED;
+
 @Slf4j
 @CrossOrigin(origins = "http://localhost:5173")
 @Controller
@@ -38,6 +40,7 @@ public class WebSocketController {
                 .setStatus("TEST")
                 .setName(message)
                 .setDelay("delay")
+                .setLightColor(RED)
                 .setTimeSent(LocalTime.now());
         return res;
     }

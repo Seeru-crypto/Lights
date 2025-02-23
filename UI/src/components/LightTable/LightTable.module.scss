@@ -1,6 +1,5 @@
 .container {
     width: 100%;
-    border: 1px solid red;
 }
 
 .row {
@@ -9,4 +8,30 @@
 
 .table {
     width: 80vw;
+}
+
+.green_light {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display: inline-block;
+
+    background-color: green;
+}
+
+.yellow_light {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display: inline-block;
+
+    background-color: yellow;
+}
+.red_light {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display: inline-block;
+
+    background-color: red;
 }

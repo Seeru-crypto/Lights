@@ -1,29 +1,37 @@
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import Greeting_2 from "./components/Greeting_2.tsx";
 import {StompSessionProvider} from "react-stomp-hooks";
 import LightTable from "./components/LightTable/LightTable.tsx";
 import LightForm from "./components/LightForm/LightForm.tsx";
+import {message} from "antd";
+import {useState} from "react";
 
 function App() {
     const API_PATH: string = "ws://localhost:8080/wsServer";
+    const [messageApi, contextHolder] = message.useMessage();
+    const [isDisabled, setIsDisabled] = useState(true)
+
+    function onConnect() {
+        setIsDisabled(false);
+        messageApi.success("Connected via websocket", 5)
+    }
 
     return (
         <div>
+            {contextHolder}
             <StompSessionProvider
                 url={API_PATH}
-                //All options supported by @stomp/stompjs can be used here
+                onConnect={() => onConnect()}
             >
 
-            <div>
-                <img src={viteLogo} className="logo" alt="Vite logo"/>
-                <img src={reactLogo} className="logo react" alt="React logo"/>
-            </div>
-            <h1>Lights UI</h1>
-            <Greeting_2/>
-                <LightForm />
-                <LightTable />
+                <div>
+                    <img src={viteLogo} className="logo" alt="Vite logo"/>
+                    <img src={reactLogo} className="logo react" alt="React logo"/>
+                </div>
+                <h1>Traffic Lights</h1>
+                <LightForm isDisabled={isDisabled}/>
+                <LightTable/>
             </StompSessionProvider>
 
         </div>

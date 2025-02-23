@@ -2,29 +2,29 @@ import {useSubscription} from "react-stomp-hooks";
 import {useState} from "react";
 import {Button, Space, Table} from "antd";
 import styles from "./LightTable.module.scss"
+import {API_PATH} from "../../utils.ts";
 
 interface ITrafficBroadCast {
     id: string,
     status: string,
     timeSent: string,
+    formattedTime?:string
     name: string,
-    delay: string
+    delay: string,
+    lightColor: LIGHT_COLOR
 }
+
+type LIGHT_COLOR = "RED" | "YELLOW" | "GREEN";
 
 const LightTable = () => {
     const GET_SLUG = "/get/lights"
     const [lights, setLights] = useState<ITrafficBroadCast[]>([]);
 
-
-    function SubscribingComponent() {
-
-        //Subscribe to /topic/test, and use handler for all received messages
-        //Note that all subscriptions made through the library are automatically removed when their owning component gets unmounted.
-        //If the STOMP connection itself is lost they are however restored on reconnect.
-        //You can also supply an array as the first parameter, which will subscribe to all destinations in the array
+    function subscribe() {
         useSubscription(GET_SLUG, (message) => {
-            const data = JSON.parse(message.body) as ITrafficBroadCast;
-            console.log(`update for ${data.name}`)
+            let data = JSON.parse(message.body) as ITrafficBroadCast;
+            const tempList = data.timeSent.split(".");
+            data = {...data, formattedTime: tempList[0]}
             updateLightList(data);
         });
     }
@@ -36,19 +36,30 @@ const LightTable = () => {
         setLights(newList)
     }
 
-    function removeSignalFromLightList(lightId: string) {
+    function removeLightFromList(lightId: string) {
         const newList = lights.filter(a => a.id !== lightId)
         setLights(newList);
     }
 
-    SubscribingComponent();
+    const getLightColor = (color: LIGHT_COLOR) => {
+        switch (color) {
+            case "YELLOW": {
+                return <div className={styles.yellow_light}></div>
+            }
+            case "GREEN":{
+                return <div className={styles.green_light}></div>
+            }
+            case "RED":{
+                return <div className={styles.red_light}></div>
+            }
+
+        }
+    }
+
+    subscribe();
 
     async function deleteLight(id: string) {
-        const API_PATH = "http://localhost:8080/lights"
-
-        console.log("delete light with id ", id)
         const url = `${API_PATH}/${id}`
-        console.log({url})
 
         const response = await fetch(url, {
             method: "DELETE",
@@ -58,7 +69,7 @@ const LightTable = () => {
         });
 
         const data = await response.json();
-        removeSignalFromLightList(data)
+        removeLightFromList(data)
     }
 
     const columns = [
@@ -75,19 +86,19 @@ const LightTable = () => {
             width: "5rem"
         },
         {
-            title: 'timeSent',
-            dataIndex: 'timeSent',
-            key: 'timeSent',
+            title: 'current color',
+            render: (record: ITrafficBroadCast) => getLightColor(record.lightColor),
+            key: 'lightColor',
             width: "5rem"
         },
         {
-            title: 'status',
-            dataIndex: 'status',
-            key: 'status',
+            title: 'Time updated',
+            dataIndex: 'formattedTime',
+            key: 'formattedTime',
             width: "5rem"
         },
         {
-            title: 'delay',
+            title: 'delay (in ms)',
             dataIndex: 'delay',
             key: 'delay',
             width: "5rem"
@@ -95,7 +106,7 @@ const LightTable = () => {
         {
             title: 'Action',
             key: 'action',
-            render: (record: any) => (
+            render: (record: ITrafficBroadCast) => (
                 <Space size="middle">
                     <Button onClick={() => deleteLight(record.id)} >Delete</Button>
                 </Space>
@@ -104,11 +115,16 @@ const LightTable = () => {
         },
     ];
 
-
     return (
         <div className={styles.container}>
             <h1>Table</h1>
-            <Table className={styles.table} rowClassName={styles.row} dataSource={lights} columns={columns} />;
+            <Table
+                className={styles.table}
+                rowKey={"id"}
+                rowClassName={styles.row}
+                pagination={false}
+                dataSource={lights}
+                columns={columns} />;
         </div>
 
     )

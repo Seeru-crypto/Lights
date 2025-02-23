@@ -1,5 +1,6 @@
 package grp.TrafficLight.models;
 
+import grp.TrafficLight.LightColor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,5 +15,6 @@ public class TrafficLightBroadcastMessage {
         private String status;
         private String name;
         private String delay;
+        private LightColor lightColor;
         LocalTime timeSent;
 }

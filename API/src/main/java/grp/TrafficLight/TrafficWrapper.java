@@ -70,6 +70,7 @@ public class TrafficWrapper extends Thread {
                 .setTimeSent(LocalTime.now())
                 .setDelay(String.valueOf(trafficLight.getDelay()))
                 .setName(trafficLight.getLightName())
+                .setLightColor(lightColor)
                 .setStatus(status);
         webSocketController.sendTrafficLightUpdate(msg);
         sleepFor(trafficLight.getDelay());
