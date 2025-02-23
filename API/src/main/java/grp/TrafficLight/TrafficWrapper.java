@@ -1,6 +1,7 @@
 package grp.TrafficLight;
 
 import grp.TrafficLight.controllers.WebSocketController;
+import grp.TrafficLight.models.TrafficLight;
 import grp.TrafficLight.models.TrafficLightBroadcastMessage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,20 +14,20 @@ import static grp.TrafficLight.LightDirection.REDDENING;
 
 @Slf4j
 public class TrafficWrapper extends Thread {
-    private TrafficLight _trafficLight;
-    private final WebSocketController _greetingControllre;
+    private final TrafficLight trafficLight;
+    private final WebSocketController webSocketController;
 
     public TrafficWrapper(TrafficLight trafficLight, WebSocketController webSocketController) {
-        this._greetingControllre = webSocketController;
-        this._trafficLight = trafficLight;
-        TrafficLightManager.addTrafficWrapper(_trafficLight.getLightId(), this);
+        this.webSocketController = webSocketController;
+        this.trafficLight = trafficLight;
+        TrafficLightManager.addTrafficWrapper(this.trafficLight.getLightId(), this);
     }
 
     public void run() {
-        _trafficLight.isEnabled();
+        trafficLight.isEnabled();
 
-        while (_trafficLight.isEnabled()) {
-            if (_trafficLight.getLightDirection() == REDDENING) {
+        while (trafficLight.isEnabled()) {
+            if (trafficLight.getLightDirection() == REDDENING) {
                 going_red();
             }
             else {
@@ -35,9 +36,8 @@ public class TrafficWrapper extends Thread {
         }
     }
 
-
     private void going_red() {
-        switch (_trafficLight.getLightColor()) {
+        switch (trafficLight.getLightColor()) {
             case GREEN:
                 changeLight(YELLOW, "🚦 YELLOW - SLOW DOWN!", REDDENING);
                 break;
@@ -49,7 +49,7 @@ public class TrafficWrapper extends Thread {
     }
 
     private void going_green() {
-        switch (_trafficLight.getLightColor()) {
+        switch (trafficLight.getLightColor()) {
             case RED:
                 changeLight(YELLOW, "🚦 YELLOW - get ready to go", GREENING);
                 break;
@@ -62,20 +62,17 @@ public class TrafficWrapper extends Thread {
 
     private void changeLight(LightColor lightColor, String status, LightDirection lightDirection) {
         log(status);
+        trafficLight.setLightColor(lightColor);
+        trafficLight.setLightDirection(lightDirection);
+
         TrafficLightBroadcastMessage msg = new TrafficLightBroadcastMessage()
-                .setId(_trafficLight.getLightId())
+                .setId(trafficLight.getLightId())
                 .setTimeSent(LocalTime.now())
-                .setName(_trafficLight.getLightName())
+                .setDelay(String.valueOf(trafficLight.getDelay()))
+                .setName(trafficLight.getLightName())
                 .setStatus(status);
-        _greetingControllre.sendTrafficLightUpdate(msg);
-        _trafficLight.setLightColor(lightColor);
-        _trafficLight.setLightDirection(lightDirection);
-
-        sleepFor(_trafficLight.getDelay());
-    }
-
-    public TrafficLight getTrafficLight() {
-        return _trafficLight;
+        webSocketController.sendTrafficLightUpdate(msg);
+        sleepFor(trafficLight.getDelay());
     }
 
     private void log(String status) {
@@ -83,8 +80,8 @@ public class TrafficWrapper extends Thread {
     }
 
     public void stopThread() {
-        _trafficLight.setEnabled(false);
-        sleepFor(_trafficLight.getDelay());
+        trafficLight.setEnabled(false);
+        sleepFor(trafficLight.getDelay());
         this.interrupt();
     }
 

@@ -6,7 +6,6 @@ public class TrafficLightManager {
     private static final ConcurrentHashMap<Long, TrafficWrapper> trafficMap = new ConcurrentHashMap<>();
 
     public static void addTrafficWrapper(Long trafficLightId, TrafficWrapper wrapper) {
-//        trafficMap.put(trafficLight, wrapper);
         trafficMap.put(trafficLightId, wrapper);
     }
 

@@ -1,5 +1,7 @@
-package grp.TrafficLight;
+package grp.TrafficLight.models;
 
+import grp.TrafficLight.LightColor;
+import grp.TrafficLight.LightDirection;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +24,6 @@ public class TrafficLight {
 
     private boolean isEnabled;
 
-    // in seconds
     private int delay;
 
     private LightColor lightColor = LightColor.RED;

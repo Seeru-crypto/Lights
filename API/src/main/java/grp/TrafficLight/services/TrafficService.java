@@ -1,6 +1,10 @@
-package grp.TrafficLight;
+package grp.TrafficLight.services;
 
+import grp.TrafficLight.repository.TrafficLightRepository;
+import grp.TrafficLight.TrafficLightManager;
+import grp.TrafficLight.TrafficWrapper;
 import grp.TrafficLight.controllers.WebSocketController;
+import grp.TrafficLight.models.TrafficLight;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +17,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 public class TrafficService {
-    protected final Repository repository;
+    protected final TrafficLightRepository trafficLightRepository;
     private final WebSocketController webSocketController;
 
     public TrafficLight createNewTrafficLight(String name, int delay) {
@@ -23,7 +27,7 @@ public class TrafficService {
                 .setDelay(delay)
                 .setEnabled(true);
 
-        repository.save(trafficLight);
+        trafficLightRepository.save(trafficLight);
 
         TrafficWrapper trafficWrapper = new TrafficWrapper(trafficLight, webSocketController);
         trafficWrapper.start();
@@ -32,39 +36,11 @@ public class TrafficService {
     }
 
     public List<TrafficLight> getTrafficLights() {
-        return repository.findAll();
-    }
-
-    public void deleteThread(long threadId) {
-        Thread thread = Thread.currentThread();
-        boolean isSuccessful = false;
-        TrafficLight trafficLight = null;
-
-        for (Thread t : Thread.getAllStackTraces().keySet()) {
-            if (t.getId() == threadId) {
-
-                if (t instanceof TrafficWrapper) {
-                    System.out.println("Stopping thread with ID: " + threadId);
-                    trafficLight = ((TrafficWrapper) t).getTrafficLight();
-                    ((TrafficWrapper) t).stopThread(); // Call stop method
-                    isSuccessful = true;
-
-                }
-            }
-        }
-
-        if (isSuccessful && trafficLight != null) {
-            log.info("success");
-            trafficLight.setEnabled(false);
-            repository.save(trafficLight);
-
-        } else {
-            log.info("boo");
-        }
+        return trafficLightRepository.findAll();
     }
 
     public void deleteLight(long lightId) {
-        TrafficLight trafficLight1 = repository.findById(lightId).orElseThrow();
+        TrafficLight trafficLight1 = trafficLightRepository.findById(lightId).orElseThrow();
 
         TrafficWrapper wrapper = TrafficLightManager.getTrafficWrapper(lightId);
 
@@ -74,8 +50,10 @@ public class TrafficService {
 
         wrapper.stopThread();
 
+        TrafficLightManager.removeTrafficWrapper(lightId);
+
         trafficLight1.setEnabled(false);
-        repository.save(trafficLight1);
+        trafficLightRepository.save(trafficLight1);
 
     }
 }

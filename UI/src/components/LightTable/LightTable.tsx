@@ -7,7 +7,8 @@ interface ITrafficBroadCast {
     id: string,
     status: string,
     timeSent: string,
-    name: string
+    name: string,
+    delay: string
 }
 
 const LightTable = () => {
@@ -74,9 +75,21 @@ const LightTable = () => {
             width: "5rem"
         },
         {
+            title: 'timeSent',
+            dataIndex: 'timeSent',
+            key: 'timeSent',
+            width: "5rem"
+        },
+        {
             title: 'status',
             dataIndex: 'status',
             key: 'status',
+            width: "5rem"
+        },
+        {
+            title: 'delay',
+            dataIndex: 'delay',
+            key: 'delay',
             width: "5rem"
         },
         {
@@ -99,8 +112,6 @@ const LightTable = () => {
         </div>
 
     )
-
-
 }
 
 export default LightTable;

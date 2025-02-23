@@ -37,6 +37,7 @@ public class WebSocketController {
                 .setId(0L)
                 .setStatus("TEST")
                 .setName(message)
+                .setDelay("delay")
                 .setTimeSent(LocalTime.now());
         return res;
     }
