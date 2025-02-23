@@ -19,6 +19,7 @@ public class TrafficWrapper extends Thread {
     public TrafficWrapper(TrafficLight trafficLight, WebSocketController webSocketController) {
         this._greetingControllre = webSocketController;
         this._trafficLight = trafficLight;
+        TrafficLightManager.addTrafficWrapper(_trafficLight.getLightId(), this);
     }
 
     public void run() {

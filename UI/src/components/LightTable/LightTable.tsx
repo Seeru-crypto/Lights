@@ -1,6 +1,6 @@
 import {useSubscription} from "react-stomp-hooks";
 import {useState} from "react";
-import {Table} from "antd";
+import {Button, Space, Table} from "antd";
 import styles from "./LightTable.module.scss"
 
 interface ITrafficBroadCast {
@@ -37,6 +37,19 @@ const LightTable = () => {
 
     SubscribingComponent();
 
+    async function deleteLight(id: string) {
+        const API_PATH = "http://localhost:8080/lights"
+
+        console.log("delete light with id ", id)
+        const url = `${API_PATH}/${id}`
+        console.log({url})
+
+        const response = await fetch(url, {
+            method: "DELETE"
+        });
+        console.log({response})
+    }
+
     const columns = [
         {
             title: 'id',
@@ -54,6 +67,16 @@ const LightTable = () => {
             title: 'status',
             dataIndex: 'status',
             key: 'status',
+            width: "5rem"
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (record: any) => (
+                <Space size="middle">
+                    <Button onClick={() => deleteLight(record.id)} >Delete</Button>
+                </Space>
+            ),
             width: "5rem"
         },
     ];

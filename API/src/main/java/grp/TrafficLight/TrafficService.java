@@ -62,5 +62,21 @@ public class TrafficService {
             log.info("boo");
         }
     }
+
+    public void deleteLight(long lightId) {
+        TrafficLight trafficLight1 = repository.findById(lightId).orElseThrow();
+
+        TrafficWrapper wrapper = TrafficLightManager.getTrafficWrapper(lightId);
+
+        if (wrapper == null) {
+            throw new NullPointerException("wrapper is null");
+        }
+
+        wrapper.stopThread();
+
+        trafficLight1.setEnabled(false);
+        repository.save(trafficLight1);
+
+    }
 }
 

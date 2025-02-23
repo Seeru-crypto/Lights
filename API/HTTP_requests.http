@@ -25,4 +25,5 @@ POST localhost:8080/lights?name=fast_boy&delay=1000
 DELETE localhost:8080/lights?id=72
 
 
-
+###
+DELETE http://localhost:8080/lights/1
