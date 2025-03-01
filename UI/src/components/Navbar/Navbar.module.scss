@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+
+    a {
+        color: inherit;
+        font-size: 1.5rem;
+    }
+}
+
+.active, .btn:hover {
+    border-bottom: 1px solid lightgreen;
+}
