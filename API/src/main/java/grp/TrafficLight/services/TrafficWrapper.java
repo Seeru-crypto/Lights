@@ -1,20 +1,24 @@
-package grp.TrafficLight;
+package grp.TrafficLight.services;
 
 import grp.TrafficLight.controllers.WebSocketController;
 import grp.TrafficLight.models.TrafficLight;
 import grp.TrafficLight.models.TrafficLightBroadcastMessage;
+import grp.TrafficLight.models.enums.LightColor;
+import grp.TrafficLight.models.enums.LightDirection;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalTime;
 
-import static grp.TrafficLight.LightColor.RED;
-import static grp.TrafficLight.LightColor.YELLOW;
-import static grp.TrafficLight.LightDirection.GREENING;
-import static grp.TrafficLight.LightDirection.REDDENING;
+import static grp.TrafficLight.models.enums.LightColor.RED;
+import static grp.TrafficLight.models.enums.LightColor.YELLOW;
+import static grp.TrafficLight.models.enums.LightDirection.GREENING;
+import static grp.TrafficLight.models.enums.LightDirection.REDDENING;
 
 @Slf4j
 public class TrafficWrapper extends Thread {
     private final TrafficLight trafficLight;
+
+    // TODO: Remove direct usage of websocket controller, you should use it through a service
     private final WebSocketController webSocketController;
 
     public TrafficWrapper(TrafficLight trafficLight, WebSocketController webSocketController) {
@@ -29,8 +33,7 @@ public class TrafficWrapper extends Thread {
         while (trafficLight.isEnabled()) {
             if (trafficLight.getLightDirection() == REDDENING) {
                 going_red();
-            }
-            else {
+            } else {
                 going_green();
             }
         }

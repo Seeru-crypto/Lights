@@ -1,4 +1,4 @@
-package grp.TrafficLight;
+package grp.TrafficLight.services;
 
 import java.util.concurrent.ConcurrentHashMap;
 

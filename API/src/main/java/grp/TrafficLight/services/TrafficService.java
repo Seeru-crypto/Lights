@@ -1,8 +1,6 @@
 package grp.TrafficLight.services;
 
 import grp.TrafficLight.repository.TrafficLightRepository;
-import grp.TrafficLight.TrafficLightManager;
-import grp.TrafficLight.TrafficWrapper;
 import grp.TrafficLight.controllers.WebSocketController;
 import grp.TrafficLight.models.TrafficLight;
 import lombok.RequiredArgsConstructor;

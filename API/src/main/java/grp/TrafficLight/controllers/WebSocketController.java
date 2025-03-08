@@ -12,7 +12,7 @@ import org.springframework.web.socket.messaging.SessionConnectedEvent;
 
 import java.time.LocalTime;
 
-import static grp.TrafficLight.LightColor.RED;
+import static grp.TrafficLight.models.enums.LightColor.RED;
 
 @Slf4j
 @CrossOrigin(origins = "http://localhost:5173")
@@ -29,8 +29,8 @@ public class WebSocketController {
         _messagingTemplate.convertAndSend("/get/lights", message);
     }
 
-    @MessageMapping("/hello")
     @SendTo("/get/lights")
+    @MessageMapping("/hello")
     public TrafficLightBroadcastMessage greeting(String message) throws Exception {
         log.info("incomming websocket request with " + message);
         Thread.sleep(1000); // simulated delay

@@ -61,15 +61,12 @@ const LightTable = () => {
     async function deleteLight(id: string) {
         const url = `${API_PATH}/${id}`
 
-        const response = await fetch(url, {
+        await fetch(url, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
             }
-        });
-
-        const data = await response.json();
-        removeLightFromList(data)
+        }).then(() => removeLightFromList(id) );
     }
 
     const columns = [
