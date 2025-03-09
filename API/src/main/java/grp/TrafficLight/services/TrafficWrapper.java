@@ -1,6 +1,5 @@
 package grp.TrafficLight.services;
 
-import grp.TrafficLight.controllers.WebSocketController;
 import grp.TrafficLight.models.TrafficLight;
 import grp.TrafficLight.models.TrafficLightBroadcastMessage;
 import grp.TrafficLight.models.enums.LightColor;
@@ -17,14 +16,13 @@ import static grp.TrafficLight.models.enums.LightDirection.REDDENING;
 @Slf4j
 public class TrafficWrapper extends Thread {
     private final TrafficLight trafficLight;
+    private TrafficService trafficService;
 
     // TODO: Remove direct usage of websocket controller, you should use it through a service
-    private final WebSocketController webSocketController;
-
-    public TrafficWrapper(TrafficLight trafficLight, WebSocketController webSocketController) {
-        this.webSocketController = webSocketController;
+    public TrafficWrapper(TrafficLight trafficLight, TrafficService trafficService) {
         this.trafficLight = trafficLight;
-        TrafficLightManager.addTrafficWrapper(this.trafficLight.getLightId(), this);
+        this.trafficService = trafficService;
+        TrafficWrapperManager.addTrafficWrapper(this.trafficLight.getLightId(), this);
     }
 
     public void run() {
@@ -75,7 +73,8 @@ public class TrafficWrapper extends Thread {
                 .setName(trafficLight.getLightName())
                 .setLightColor(lightColor)
                 .setStatus(status);
-        webSocketController.sendTrafficLightUpdate(msg);
+
+        trafficService.sendTrafficLightUpdate(msg);
         sleepFor(trafficLight.getDelay());
     }
 
