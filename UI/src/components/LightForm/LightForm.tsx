@@ -1,7 +1,8 @@
 import {useState} from "react";
 import {Button, Input} from "antd";
 import styles from "./LightForm.module.scss"
-
+import {ITrafficLightDto} from "./ITrafficLightDto.ts";
+import {POST} from "./httpClient.ts";
 
 interface ILightForm {
     isDisabled: boolean;
@@ -10,15 +11,13 @@ interface ILightForm {
 const LightForm = ({isDisabled}: ILightForm) => {
     const [lightName, setLightName] = useState("");
     const [lightDelay, setLightDelay] = useState("0");
-    const API_PATH = "http://localhost:8080/lights"
 
-    async function createLight() {
-        const url = `${API_PATH}?name=${lightName}&delay=${lightDelay} `
-
-        await fetch(url, {
-            method: "POST",
-            body: JSON.stringify({}),
-        });
+    function createLight() {
+        const requestBody: ITrafficLightDto = {
+            "name": lightName,
+            "delay": parseInt(lightDelay)
+        }
+        POST(requestBody)
     }
 
     function setDelay(input: string) {
@@ -28,15 +27,10 @@ const LightForm = ({isDisabled}: ILightForm) => {
 
         if (isNaN(parseInt(input))) {
             console.log("invalid number")
-        }
-        else {
+        } else {
             const modifiedInput = parseInt(input) * 1000;
             setLightDelay(modifiedInput.toString())
         }
-    }
-
-    function submitForm() {
-        createLight();
     }
 
     return (
@@ -45,16 +39,18 @@ const LightForm = ({isDisabled}: ILightForm) => {
                 <h3>Create new light</h3>
                 <div className={styles.inputGrp}>
                     <label className={styles.inputLabel} htmlFor="light_name">Light name</label>
-                    <Input name={"light_name"} disabled={isDisabled} onChange={(e) => setLightName(e.target.value)} placeholder="light name" />
+                    <Input name={"light_name"} disabled={isDisabled} onChange={(e) => setLightName(e.target.value)}
+                           placeholder="light name"/>
                 </div>
 
                 <div className={styles.inputGrp}>
                     <label className={styles.inputLabel} htmlFor="light_delay">Light delay</label>
-                    <Input name={"light_delay"} disabled={isDisabled} onChange={(e) => setDelay(e.target.value)} placeholder="light delay (s)" />
+                    <Input name={"light_delay"} disabled={isDisabled} onChange={(e) => setDelay(e.target.value)}
+                           placeholder="light delay (s)"/>
                 </div>
 
             </div>
-            <Button disabled={isDisabled} onClick={() => submitForm()}>submit</Button>
+            <Button disabled={isDisabled} onClick={() => createLight()}>submit</Button>
         </div>
     )
 }

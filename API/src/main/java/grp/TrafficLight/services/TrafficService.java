@@ -1,6 +1,7 @@
 package grp.TrafficLight.services;
 
 import grp.TrafficLight.models.TrafficLightBroadcastMessage;
+import grp.TrafficLight.models.TrafficLightDto;
 import grp.TrafficLight.repository.TrafficLightRepository;
 import grp.TrafficLight.models.TrafficLight;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +20,11 @@ public class TrafficService {
     protected final TrafficLightRepository trafficLightRepository;
     private final SimpMessagingTemplate messagingTemplate;
 
-    public TrafficLight createNewTrafficLight(String name, int delay) {
+    public TrafficLight createNewTrafficLight(TrafficLightDto dto) {
 
         TrafficLight trafficLight = new TrafficLight()
-                .setLightName(name)
-                .setDelay(delay)
+                .setLightName(dto.getName())
+                .setDelay(dto.getDelay())
                 .setEnabled(true);
 
         trafficLightRepository.save(trafficLight);

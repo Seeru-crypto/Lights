@@ -1,7 +1,9 @@
 package grp.TrafficLight.controllers;
 
 import grp.TrafficLight.models.TrafficLight;
+import grp.TrafficLight.models.TrafficLightDto;
 import grp.TrafficLight.services.TrafficService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +29,10 @@ public class TrafficLightController {
         return ResponseEntity.ok(trafficService.getTrafficLights());
     }
 
-    // TOOO: update to use proper POST body
     @PostMapping
-    public ResponseEntity<Void> post(
-            @RequestParam(name = "delay") int delay,
-            @RequestParam(name = "name") String name
-    ) {
-        log.info("REST request to create light with delay: " + delay + " and name " + name);
-        long lightId = trafficService.createNewTrafficLight(name, delay).getLightId();
+    public ResponseEntity<Void> post(@Valid @RequestBody TrafficLightDto dto) {
+        log.info("REST request to create light with delay: " + dto.getDelay() + " and name " + dto.getName());
+        long lightId = trafficService.createNewTrafficLight(dto).getLightId();
         URI lights = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{lightId}")
                 .buildAndExpand(lightId)

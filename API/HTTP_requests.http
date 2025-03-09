@@ -21,6 +21,16 @@ POST localhost:8080/lights?name=mid_boy&delay=5000
 POST localhost:8080/lights?name=fast_boy&delay=1000
 
 
+### Create Light v2
+POST localhost:8080/lights
+Content-Type: application/json
+
+{
+  "name": "fast_2",
+  "delay": 3000
+}
+
+
 ### Delete
 DELETE localhost:8080/lights?id=72
 
