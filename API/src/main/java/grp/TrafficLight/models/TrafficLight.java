@@ -22,7 +22,7 @@ public class TrafficLight {
 
     private String lightName;
 
-    private boolean isEnabled;
+    private boolean isEnabled=true;
 
     private int delay;
 

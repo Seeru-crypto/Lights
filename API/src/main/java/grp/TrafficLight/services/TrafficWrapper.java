@@ -16,9 +16,8 @@ import static grp.TrafficLight.models.enums.LightDirection.REDDENING;
 @Slf4j
 public class TrafficWrapper extends Thread {
     private final TrafficLight trafficLight;
-    private TrafficService trafficService;
+    private final TrafficService trafficService;
 
-    // TODO: Remove direct usage of websocket controller, you should use it through a service
     public TrafficWrapper(TrafficLight trafficLight, TrafficService trafficService) {
         this.trafficLight = trafficLight;
         this.trafficService = trafficService;
@@ -29,40 +28,32 @@ public class TrafficWrapper extends Thread {
         trafficLight.isEnabled();
 
         while (trafficLight.isEnabled()) {
+
             if (trafficLight.getLightDirection() == REDDENING) {
-                going_red();
+                goingRed();
             } else {
-                going_green();
+                goingGreen();
             }
         }
     }
 
-    private void going_red() {
+    private void goingRed() {
         switch (trafficLight.getLightColor()) {
-            case GREEN:
-                changeLight(YELLOW, "🚦 YELLOW - SLOW DOWN!", REDDENING);
-                break;
-
-            case YELLOW:
-                changeLight(RED, "🚦 RED - STOP!", GREENING);
-                break;
+            case GREEN -> changeLight(YELLOW, "🚦 YELLOW - SLOW DOWN!", REDDENING);
+            case YELLOW -> changeLight(RED, "🚦 RED - STOP!", GREENING);
+            default -> log.info("Error occured with light " + trafficLight.getLightId() );
         }
     }
 
-    private void going_green() {
+    private void goingGreen() {
         switch (trafficLight.getLightColor()) {
-            case RED:
-                changeLight(YELLOW, "🚦 YELLOW - get ready to go", GREENING);
-                break;
-
-            case YELLOW:
-                changeLight(LightColor.GREEN, "🚦 GREEN - Go", REDDENING);
-                break;
+            case RED -> changeLight(YELLOW, "🚦 YELLOW - get ready to go", GREENING);
+            case YELLOW -> changeLight(LightColor.GREEN, "🚦 GREEN - Go", REDDENING);
+            default -> log.info("Error occured with light " + trafficLight.getLightId() );
         }
     }
 
     private void changeLight(LightColor lightColor, String status, LightDirection lightDirection) {
-        log(status);
         trafficLight.setLightColor(lightColor);
         trafficLight.setLightDirection(lightDirection);
 
@@ -76,10 +67,6 @@ public class TrafficWrapper extends Thread {
 
         trafficService.sendTrafficLightUpdate(msg);
         sleepFor(trafficLight.getDelay());
-    }
-
-    private void log(String status) {
-        // log.info("light_id : " + _trafficLight.getLightId() + " thread_id : " + Thread.currentThread().threadId() + " " + status);
     }
 
     public void stopThread() {

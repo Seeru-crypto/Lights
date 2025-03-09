@@ -24,8 +24,7 @@ public class TrafficService {
 
         TrafficLight trafficLight = new TrafficLight()
                 .setLightName(dto.getName())
-                .setDelay(dto.getDelay())
-                .setEnabled(true);
+                .setDelay(dto.getDelay());
 
         trafficLightRepository.save(trafficLight);
 
