@@ -1,5 +1,6 @@
 package grp.TrafficLight.services;
 
+import grp.TrafficLight.models.ChangeCounter;
 import grp.TrafficLight.models.TrafficLight;
 import grp.TrafficLight.models.TrafficLightBroadcastMessage;
 import grp.TrafficLight.models.enums.LightColor;
@@ -17,10 +18,12 @@ import static grp.TrafficLight.models.enums.LightDirection.REDDENING;
 public class TrafficWrapper extends Thread {
     private final TrafficLight trafficLight;
     private final TrafficService trafficService;
+    private ChangeCounter changeCounter;
 
-    public TrafficWrapper(TrafficLight trafficLight, TrafficService trafficService) {
+    public TrafficWrapper(ChangeCounter changeCounter, TrafficLight trafficLight, TrafficService trafficService) {
         this.trafficLight = trafficLight;
         this.trafficService = trafficService;
+        this.changeCounter = changeCounter;
         TrafficWrapperManager.addTrafficWrapper(this.trafficLight.getLightId(), this);
     }
 
@@ -67,6 +70,7 @@ public class TrafficWrapper extends Thread {
 
         trafficService.sendTrafficLightUpdate(msg);
         log(status);
+        changeCounter.update(trafficLight.getLightId(), lightColor);
         sleepFor(trafficLight.getDelay());
     }
 

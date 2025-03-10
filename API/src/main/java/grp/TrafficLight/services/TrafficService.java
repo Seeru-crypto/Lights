@@ -1,5 +1,6 @@
 package grp.TrafficLight.services;
 
+import grp.TrafficLight.models.ChangeCounter;
 import grp.TrafficLight.models.TrafficLightBroadcastMessage;
 import grp.TrafficLight.models.TrafficLightDto;
 import grp.TrafficLight.repository.TrafficLightRepository;
@@ -19,6 +20,7 @@ import java.util.List;
 public class TrafficService {
     protected final TrafficLightRepository trafficLightRepository;
     private final SimpMessagingTemplate messagingTemplate;
+    protected ChangeCounter changeCounter = new ChangeCounter();
 
     public TrafficLight createNewTrafficLight(TrafficLightDto dto) {
 
@@ -28,7 +30,7 @@ public class TrafficService {
 
         trafficLightRepository.save(trafficLight);
 
-        TrafficWrapper trafficWrapper = new TrafficWrapper(trafficLight, this);
+        TrafficWrapper trafficWrapper = new TrafficWrapper(changeCounter, trafficLight, this);
         trafficWrapper.start();
         log.info("created new wrapper with ID " + trafficWrapper.threadId());
         return trafficLight;

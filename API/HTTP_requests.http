@@ -19,8 +19,8 @@ POST localhost:8080/lights
 Content-Type: application/json
 
 {
-  "name": "fast_2",
-  "delay": 3000
+  "name": "C_fast",
+  "delay": 1000
 }
 
 
@@ -39,7 +39,7 @@ POST localhost:8080/lights
 Content-Type: application/json
 
 {
-  "name": "slow",
+  "name": "slow_2",
   "delay": 10000
 }
 
