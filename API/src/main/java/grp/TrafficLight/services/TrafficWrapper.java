@@ -66,7 +66,12 @@ public class TrafficWrapper extends Thread {
                 .setStatus(status);
 
         trafficService.sendTrafficLightUpdate(msg);
+        log(status);
         sleepFor(trafficLight.getDelay());
+    }
+
+    private void log(String status) {
+         log.info("light_id : " + trafficLight.getLightId() + " thread_id : " + Thread.currentThread().threadId() + " " + status);
     }
 
     public void stopThread() {
@@ -83,3 +88,37 @@ public class TrafficWrapper extends Thread {
         }
     }
 }
+
+// Proposal for a refactor
+//public class TrafficWrapper implements Runnable {
+//    private final TrafficLight trafficLight;
+//    private final TrafficService trafficService;
+//
+//    public TrafficWrapper(TrafficLight trafficLight, TrafficService trafficService) {
+//        this.trafficLight = trafficLight;
+//        this.trafficService = trafficService;
+//    }
+//
+//    @Override
+//    public void run() {
+//        while (trafficLight.isEnabled()) {
+//            processLightChange();
+//            sleep(trafficLight.getDelay());
+//        }
+//    }
+//
+//    // Make this public (or package-private) for testing
+//    void processLightChange() {
+//        // Your light changing logic here
+//        // ...
+//        trafficService.sendTrafficLightUpdate(new TrafficLightBroadcastMessage(trafficLight));
+//    }
+//
+//    private void sleep(long delay) {
+//        try {
+//            Thread.sleep(delay);
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//        }
+//    }
+//}

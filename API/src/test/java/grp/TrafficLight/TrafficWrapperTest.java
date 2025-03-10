@@ -29,14 +29,8 @@ class TrafficWrapperTest {
     @Mock
     private TrafficService trafficService;
 
-    @Mock
-    private TrafficLightRepository trafficLightRepository;
-
-    @Mock
-    private SimpMessagingTemplate simpMessagingTemplate;
-
     private final Long LIGHT_ID = 123L;
-    private final int LIGHT_DELAY = 3000;
+    private final int LIGHT_DELAY = 500;
 
     @BeforeEach
     public void setUp() {
@@ -67,63 +61,59 @@ class TrafficWrapperTest {
     }
 
     @Test
-    void wrapperThread_shouldStartFromRedAndGoGreen() throws InterruptedException {
-        // Arrange
+    void wrapperThread_ThreadShouldLoopColors_andBroadcastMessage() throws InterruptedException {
         trafficLight
-                .setLightColor(GREEN)
-                .setLightDirection(REDDENING)
-                .setDelay(LIGHT_DELAY);
+                .setLightDirection(GREENING)
+                .setLightColor(RED)
+                .setDelay(LIGHT_DELAY); // Short delay for testing
+
+        // Configure mock behavior
+        doNothing().when(trafficService).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class));
+
+        // Create wrapper and run it in a separate thread
         TrafficWrapper trafficWrapper = new TrafficWrapper(trafficLight, trafficService);
-        trafficWrapper.run();
+        Thread wrapperThread = new Thread(trafficWrapper);
+        wrapperThread.start();
 
-        Thread.sleep(LIGHT_DELAY + 100); // Convert seconds to milliseconds
+        assertEquals(RED, trafficLight.getLightColor());
+        assertEquals(GREENING, trafficLight.getLightDirection());
+        verify(trafficService, times(1)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class));
+
+        Thread.sleep(LIGHT_DELAY + 50); // Adjust this value based on your implementation
+
+        // GREEN - RED
+        assertEquals(GREEN, trafficLight.getLightColor());
+        assertEquals(REDDENING, trafficLight.getLightDirection());
+        verify(trafficService, times(2)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class));
+
+        Thread.sleep(LIGHT_DELAY + 50); // Adjust this value based on your implementation
+
+        assertEquals(YELLOW, trafficLight.getLightColor());
+        assertEquals(REDDENING, trafficLight.getLightDirection());
+        verify(trafficService, times(3)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class));
+
+        Thread.sleep(LIGHT_DELAY + 50); // Adjust this value based on your implementation
+
+        assertEquals(RED, trafficLight.getLightColor());
+        assertEquals(GREENING, trafficLight.getLightDirection());
+        verify(trafficService, times(4)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class));
+
+        // RED - GREEN
+        Thread.sleep(LIGHT_DELAY + 50); // Adjust this value based on your implementation
+
+        assertEquals(YELLOW, trafficLight.getLightColor());
+        assertEquals(GREENING, trafficLight.getLightDirection());
+        verify(trafficService, times(5)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class));
+
+        Thread.sleep(LIGHT_DELAY + 50); // Adjust this value based on your implementation
+
+        assertEquals(GREEN, trafficLight.getLightColor());
+        assertEquals(REDDENING, trafficLight.getLightDirection());
+        verify(trafficService, times(6)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class));
 
 
-        // Act - simulate one cycle through the state machine
-
-        // Assert
-        // Verify that the traffic light color changed to YELLOW during the transition
-        assertEquals(YELLOW, trafficLight.getLightColor(), "Light should transition to YELLOW when going GREEN from RED");
-        assertEquals(REDDENING, trafficLight.getLightDirection(), "Direction should remain GREENING during transition");
-
-        // Verify that the service was called to broadcast the message
-        verify(trafficService).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class));
+        // Stop the thread
+        trafficLight.setEnabled(false);
+        wrapperThread.join(1000); // Wait max 1 second for thread to terminate
     }
-
-//    @Test
-//    public void testGoingRedFromGreen() throws InterruptedException {
-//        // Setup
-//        when(trafficLight.isEnabled()).thenReturn(true, true, false);
-//        when(trafficLight.getLightDirection()).thenReturn(REDDENING);
-//        when(trafficLight.getLightColor()).thenReturn(GREEN);
-//        when(trafficLight.getDelay()).thenReturn(100);
-//        when(trafficLight.getLightName()).thenReturn("Test Light");
-//
-//        // Use try-with-resources to handle mocking static methods
-//        try (MockedStatic<Thread> threadMock = mockStatic(Thread.class);
-//             MockedStatic<LocalTime> timeMock = mockStatic(LocalTime.class)) {
-//
-//            // Mock the static methods
-//            LocalTime fixedTime = LocalTime.of(12, 0);
-//            timeMock.when(LocalTime::now).thenReturn(fixedTime);
-//
-//            // Start the thread and give it time to execute
-//            trafficWrapper.run();
-//
-//            // Verify light color was changed to YELLOW
-//            verify(trafficLight).setLightColor(YELLOW);
-//            verify(trafficLight).setLightDirection(REDDENING);
-//
-//            // Verify the message was sent
-//            ArgumentCaptor<TrafficLightBroadcastMessage> messageCaptor =
-//                    ArgumentCaptor.forClass(TrafficLightBroadcastMessage.class);
-//            verify(trafficService).sendTrafficLightUpdate(messageCaptor.capture());
-//
-//            TrafficLightBroadcastMessage sentMessage = messageCaptor.getValue();
-//            assertEquals(1L, sentMessage.getId());
-//            assertEquals(YELLOW, sentMessage.getLightColor());
-//            assertEquals("🚦 YELLOW - SLOW DOWN!", sentMessage.getStatus());
-//            assertEquals(fixedTime, sentMessage.getTimeSent());
-//        }
-//    }
 }
