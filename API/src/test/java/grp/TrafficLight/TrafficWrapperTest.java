@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static grp.TrafficLight.models.enums.LightColor.*;
 import static grp.TrafficLight.models.enums.LightDirection.GREENING;
 import static grp.TrafficLight.models.enums.LightDirection.REDDENING;
+import static grp.TrafficLight.services.TrafficService.SIGNAL_LIGHTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -69,7 +70,7 @@ class TrafficWrapperTest {
                 .setDelay(LIGHT_DELAY); // Short delay for testing
 
         // Configure mock behavior
-        doNothing().when(trafficService).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class));
+        doNothing().when(trafficService).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class), SIGNAL_LIGHTS);
         ChangeCounter changeCounter = new ChangeCounter();
 
         // Create wrapper and run it in a separate thread
@@ -84,32 +85,32 @@ class TrafficWrapperTest {
         // GREEN - RED
         assertEquals(YELLOW, trafficLight.getLightColor());
         assertEquals(GREENING, trafficLight.getLightDirection());
-        verify(trafficService, times(1)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class));
+        verify(trafficService, times(1)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class), SIGNAL_LIGHTS);
 
         Thread.sleep(LIGHT_DELAY + 50); // Adjust this value based on your implementation
 
         assertEquals(GREEN, trafficLight.getLightColor());
         assertEquals(REDDENING, trafficLight.getLightDirection());
-         verify(trafficService, times(2)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class));
+         verify(trafficService, times(2)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class), SIGNAL_LIGHTS);
 
         Thread.sleep(LIGHT_DELAY + 50); // Adjust this value based on your implementation
 
         assertEquals(YELLOW, trafficLight.getLightColor());
         assertEquals(REDDENING, trafficLight.getLightDirection());
-         verify(trafficService, times(3)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class));
+         verify(trafficService, times(3)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class), SIGNAL_LIGHTS);
 
         // RED - GREEN
         Thread.sleep(LIGHT_DELAY + 50); // Adjust this value based on your implementation
 
         assertEquals(RED, trafficLight.getLightColor());
         assertEquals(GREENING, trafficLight.getLightDirection());
-         verify(trafficService, times(4)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class));
+         verify(trafficService, times(4)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class), SIGNAL_LIGHTS);
 
         Thread.sleep(LIGHT_DELAY + 50); // Adjust this value based on your implementation
 
         assertEquals(YELLOW, trafficLight.getLightColor());
         assertEquals(GREENING, trafficLight.getLightDirection());
-         verify(trafficService, times(5)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class));
+         verify(trafficService, times(5)).sendTrafficLightUpdate(any(TrafficLightBroadcastMessage.class), SIGNAL_LIGHTS);
 
 
         // Stop the thread

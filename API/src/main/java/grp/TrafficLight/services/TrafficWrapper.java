@@ -13,6 +13,7 @@ import static grp.TrafficLight.models.enums.LightColor.RED;
 import static grp.TrafficLight.models.enums.LightColor.YELLOW;
 import static grp.TrafficLight.models.enums.LightDirection.GREENING;
 import static grp.TrafficLight.models.enums.LightDirection.REDDENING;
+import static grp.TrafficLight.services.TrafficService.SIGNAL_LIGHTS;
 
 @Slf4j
 public class TrafficWrapper extends Thread {
@@ -68,9 +69,9 @@ public class TrafficWrapper extends Thread {
                 .setLightColor(lightColor)
                 .setStatus(status);
 
-        trafficService.sendTrafficLightUpdate(msg);
+        trafficService.sendTrafficLightUpdate(msg, SIGNAL_LIGHTS);
         log(status);
-        changeCounter.update(trafficLight.getLightId(), lightColor);
+        changeCounter.update(trafficLight.getLightId(), lightColor, trafficService);
         sleepFor(trafficLight.getDelay());
     }
 

@@ -18,6 +18,8 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 public class TrafficService {
+    public static final String SIGNAL_LIGHTS = "/get/lights";
+    public static final String SIGNAL_COUNTER = "/get/counter";
     protected final TrafficLightRepository trafficLightRepository;
     private final SimpMessagingTemplate messagingTemplate;
     protected ChangeCounter changeCounter = new ChangeCounter();
@@ -57,7 +59,8 @@ public class TrafficService {
         trafficLightRepository.save(trafficLight1);
     }
 
-    public void sendTrafficLightUpdate(TrafficLightBroadcastMessage message) {
-        messagingTemplate.convertAndSend("/get/lights", message);
+    public void sendTrafficLightUpdate(TrafficLightBroadcastMessage message, String destination ) {
+        messagingTemplate.convertAndSend(destination, message);
     }
+
 }
