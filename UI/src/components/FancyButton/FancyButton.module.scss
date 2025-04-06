@@ -1,0 +1,18 @@
+.container {
+  background: white;
+  background: linear-gradient(315deg, white 0%, white 50%, #560bad 50%, #560bad 100%);
+  background-size: 250% 250%;
+  color: #560bad;
+  font-weight: bold;
+  font-size: 1rem;
+  border: 2px solid #560bad;
+  border-radius: .5rem;
+  background-position: bottom right;
+  transition: all 0.8s ease;
+}
+
+.container:hover {
+  background-position: top left;
+  color: white;
+}
+

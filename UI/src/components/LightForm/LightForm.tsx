@@ -3,6 +3,7 @@ import {Button, Input} from "antd";
 import styles from "./LightForm.module.scss"
 import {ITrafficLightDto} from "./ITrafficLightDto.ts";
 import {POST} from "./httpClient.ts";
+import FancyButton from "../FancyButton/FancyButton.tsx";
 
 interface ILightForm {
     isDisabled: boolean;
@@ -50,7 +51,8 @@ const LightForm = ({isDisabled}: ILightForm) => {
                 </div>
 
             </div>
-            <Button disabled={isDisabled} onClick={() => createLight()}>submit</Button>
+            <FancyButton type={"create"} onClick={() => createLight()} label={"submit"} />
+            {/*<Button disabled={isDisabled} onClick={() => createLight()}>submit</Button>*/}
         </div>
     )
 }
