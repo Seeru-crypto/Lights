@@ -1,8 +1,9 @@
 import {useSubscription} from "react-stomp-hooks";
 import {useState} from "react";
-import {Button, Space, Table} from "antd";
+import {Space, Table} from "antd";
 import styles from "./LightTable.module.scss"
 import {API_PATH} from "../../utils.ts";
+import FancyButton from "../FancyButton/FancyButton.tsx";
 
 interface ITrafficBroadCast {
     id: string,
@@ -105,7 +106,7 @@ const LightTable = () => {
             key: 'action',
             render: (record: ITrafficBroadCast) => (
                 <Space size="middle">
-                    <Button onClick={() => deleteLight(record.id)} >Delete</Button>
+                    <FancyButton type={"delete"} label={"Delete"} onClick={() => deleteLight(record.id)} />
                 </Space>
             ),
             width: "5rem"

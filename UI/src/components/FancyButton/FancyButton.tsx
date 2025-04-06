@@ -10,10 +10,15 @@ export interface IFancyButton {
 }
 
 const FancyButton = (props: IFancyButton) => {
+
+    function getClassName(): string {
+        if (props.type=="delete") return styles.delete
+        else return styles.create
+    }
+
     return (
-        <button className={styles.container} onClick={() => props.onClick()}>{props.label}</button>
+        <button className={`${styles.container} ${getClassName()}`} onClick={() => props.onClick()}>{props.label}</button>
 
     )
-
 }
 export default FancyButton;

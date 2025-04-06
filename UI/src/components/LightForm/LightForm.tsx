@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Button, Input} from "antd";
+import {Input} from "antd";
 import styles from "./LightForm.module.scss"
 import {ITrafficLightDto} from "./ITrafficLightDto.ts";
 import {POST} from "./httpClient.ts";
@@ -52,7 +52,6 @@ const LightForm = ({isDisabled}: ILightForm) => {
 
             </div>
             <FancyButton type={"create"} onClick={() => createLight()} label={"submit"} />
-            {/*<Button disabled={isDisabled} onClick={() => createLight()}>submit</Button>*/}
         </div>
     )
 }
