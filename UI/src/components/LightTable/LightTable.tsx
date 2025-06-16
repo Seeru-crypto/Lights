@@ -1,9 +1,9 @@
 import {useSubscription} from "react-stomp-hooks";
 import {useState} from "react";
-import {Space, Table} from "antd";
+import {Space, Table, message} from "antd";
 import styles from "./LightTable.module.scss"
-import {API_PATH} from "../../utils.ts";
 import FancyButton from "../FancyButton/FancyButton.tsx";
+import {apiService} from "../../services/api";
 
 interface ITrafficBroadCast {
     id: string,
@@ -20,6 +20,7 @@ type LIGHT_COLOR = "RED" | "YELLOW" | "GREEN";
 const LightTable = () => {
     const GET_SLUG = "/get/lights"
     const [lights, setLights] = useState<ITrafficBroadCast[]>([]);
+    const [messageApi, contextHolder] = message.useMessage();
 
     function subscribe() {
         useSubscription(GET_SLUG, (message) => {
@@ -53,21 +54,19 @@ const LightTable = () => {
             case "RED":{
                 return <div className={styles.red_light}></div>
             }
-
         }
     }
 
     subscribe();
 
     async function deleteLight(id: string) {
-        const url = `${API_PATH}/${id}`
-
-        await fetch(url, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(() => removeLightFromList(id) );
+        try {
+            await apiService.deleteLight(id);
+            removeLightFromList(id);
+            messageApi.success("Light successfully deleted");
+        } catch (error) {
+            messageApi.error("Failed to delete light");
+        }
     }
 
     const columns = [
@@ -115,6 +114,7 @@ const LightTable = () => {
 
     return (
         <div className={styles.container}>
+            {contextHolder}
             <h1>Table</h1>
             <Table
                 className={styles.table}
@@ -124,7 +124,6 @@ const LightTable = () => {
                 dataSource={lights}
                 columns={columns} />
         </div>
-
     )
 }
 

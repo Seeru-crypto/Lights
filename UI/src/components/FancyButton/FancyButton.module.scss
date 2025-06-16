@@ -21,6 +21,20 @@
 
 
   &.create {
+    background: var(--primary-bg);
+    background: linear-gradient(315deg, var(--primary-bg) 0%, var(--primary-bg) 50%, var(--accent-color) 50%, var(--accent-color) 100%);
+    color: var(--accent-color);
+    background-size: 250% 250%;
+    background-position: bottom right;
+    border-color: var(--primary-bg);
+
+    &:hover {
+      background-position: top left;
+      color: var(--primary-bg);
+    }
+  }
+
+  &.create_2 {
     background: white;
     background: linear-gradient(315deg, white 0%, white 50%, #57a879 50%, #57a879 100%);
     color: #57a879;
