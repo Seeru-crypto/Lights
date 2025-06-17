@@ -38,7 +38,7 @@ const LightForm = ({isDisabled}: ILightForm) => {
             <div className={styles.input_container}>
                 <h3>Create new light</h3>
                 <Input value={lightName} onChange={(e: string) => setLightName(e)} placeholder="light name" label="Light name"/>
-                <NumberInput value={lightDelay} onChange={(e: number) => setLightDelay(e)} placeholder="light delay (s)" label="Light delay"/>
+                <NumberInput value={lightDelay} onChange={(e: number) => setLightDelay(e)} placeholder="5" label="Light delay (s)"/>
             </div>
             <FancyButton type={"create"} onClick={() => createLight()} label={"submit"} />
         </div>
