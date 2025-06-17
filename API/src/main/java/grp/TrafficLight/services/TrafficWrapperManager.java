@@ -1,8 +1,8 @@
-package grp.TrafficLight;
+package grp.TrafficLight.services;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class TrafficLightManager {
+public class TrafficWrapperManager {
     private static final ConcurrentHashMap<Long, TrafficWrapper> trafficMap = new ConcurrentHashMap<>();
 
     public static void addTrafficWrapper(Long trafficLightId, TrafficWrapper wrapper) {

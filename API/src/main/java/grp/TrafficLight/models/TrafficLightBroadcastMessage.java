@@ -1,6 +1,6 @@
 package grp.TrafficLight.models;
 
-import grp.TrafficLight.LightColor;
+import grp.TrafficLight.models.enums.LightColor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

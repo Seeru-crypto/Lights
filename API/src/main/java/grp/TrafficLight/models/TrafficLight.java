@@ -1,7 +1,7 @@
 package grp.TrafficLight.models;
 
-import grp.TrafficLight.LightColor;
-import grp.TrafficLight.LightDirection;
+import grp.TrafficLight.models.enums.LightColor;
+import grp.TrafficLight.models.enums.LightDirection;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +22,7 @@ public class TrafficLight {
 
     private String lightName;
 
-    private boolean isEnabled;
+    private boolean isEnabled = true;
 
     private int delay;
 

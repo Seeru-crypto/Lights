@@ -1,0 +1,112 @@
+.card {
+    width: 300px;
+    margin: 1rem;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    animation: cardAppear 0.3s ease-out;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    :global {
+        .ant-card-head {
+            border-bottom: 2px solid var(--border-color);
+        }
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    color: var(--text-primary);
+
+}
+
+.deleteIcon {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        color: var(--error-color);
+        transform: scale(1.1);
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    span {
+        color: var(--text-primary);
+    }
+}
+
+.statusSection {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--secondary-bg);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.statusEmoji {
+    font-size: 2rem;
+}
+
+.statusText {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.detailsSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.detailItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: var(--secondary-bg);
+    border-radius: 4px;
+}
+
+// Color-specific styles
+.lightRed {
+    border-left: 4px solid var(--error-color);
+    border-bottom: 4px solid var(--error-color);
+}
+
+.lightYellow {
+    border-left: 4px solid var(--warning-color);
+    border-bottom: 4px solid var(--warning-color);
+
+}
+
+.lightGreen {
+    border-left: 4px solid var(--success-color);
+    border-bottom: 4px solid var(--success-color);
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} 

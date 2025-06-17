@@ -5,32 +5,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 
 import java.time.LocalTime;
 
-import static grp.TrafficLight.LightColor.RED;
+import static grp.TrafficLight.models.enums.LightColor.RED;
 
 @Slf4j
 @CrossOrigin(origins = "http://localhost:5173")
 @Controller
 public class WebSocketController {
-
-    private SimpMessagingTemplate _messagingTemplate;
-
-    public WebSocketController(SimpMessagingTemplate messagingTemplate) {
-        this._messagingTemplate =  messagingTemplate;
-    }
-
-    public void sendTrafficLightUpdate(TrafficLightBroadcastMessage message) {
-        _messagingTemplate.convertAndSend("/get/lights", message);
-    }
-
-    @MessageMapping("/hello")
     @SendTo("/get/lights")
+    @MessageMapping("/hello")
     public TrafficLightBroadcastMessage greeting(String message) throws Exception {
         log.info("incomming websocket request with " + message);
         Thread.sleep(1000); // simulated delay

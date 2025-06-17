@@ -14,11 +14,34 @@ GET localhost:8080/lights
 ### Create Light
 POST localhost:8080/lights?name=slow_boy&delay=10000
 
-### Create Light 2
-POST localhost:8080/lights?name=mid_boy&delay=5000
+### Create Light v2
+POST localhost:8080/lights
+Content-Type: application/json
 
-### Create Light 2
-POST localhost:8080/lights?name=fast_boy&delay=1000
+{
+  "name": "C_fast",
+  "delay": 1000
+}
+
+
+### Create Light v2_mid
+POST localhost:8080/lights
+Content-Type: application/json
+
+{
+  "name": "mid",
+  "delay": 5000
+}
+
+
+### Create Light V2_slow
+POST localhost:8080/lights
+Content-Type: application/json
+
+{
+  "name": "slow_2",
+  "delay": 10000
+}
 
 
 ### Delete

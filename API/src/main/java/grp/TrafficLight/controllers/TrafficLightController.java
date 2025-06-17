@@ -1,13 +1,17 @@
 package grp.TrafficLight.controllers;
 
 import grp.TrafficLight.models.TrafficLight;
+import grp.TrafficLight.models.TrafficLightDto;
 import grp.TrafficLight.services.TrafficService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -26,19 +30,20 @@ public class TrafficLightController {
     }
 
     @PostMapping
-    public ResponseEntity<TrafficLight> post(
-            @RequestParam(name = "delay") int delay,
-            @RequestParam(name = "name") String name
-    ) {
-
-        log.info("REST request to create light with delay: "+  delay + " and name "+name);
-        return ResponseEntity.ok(trafficService.createNewTrafficLight(name, delay ));
+    public ResponseEntity<Void> post(@Valid @RequestBody TrafficLightDto dto) {
+        log.info("REST request to create light with delay: " + dto.getDelay() + " and name " + dto.getName());
+        long lightId = trafficService.createNewTrafficLight(dto).getLightId();
+        URI lights = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{lightId}")
+                .buildAndExpand(lightId)
+                .toUri();
+        return ResponseEntity.created(lights).build();
     }
 
     @DeleteMapping(("/{id}"))
-    public ResponseEntity<Long> delete( @PathVariable Long id) {
-        log.info("REST request to delete light  with id "+ id);
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
+        log.info("REST request to delete light  with id " + id);
         trafficService.deleteLight(id);
-        return ResponseEntity.ok(id);
+        return ResponseEntity.noContent().build();
     }
 }
