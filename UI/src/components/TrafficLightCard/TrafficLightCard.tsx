@@ -1,4 +1,4 @@
-import { Button, Card, Modal } from 'antd';
+import { Card, Modal } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { ITrafficLight } from '../../types/ITrafficLight';
 import styles from './TrafficLightCard.module.scss';
@@ -56,6 +56,17 @@ const TrafficLightCard = ({ light, onDelete }: TrafficLightCardProps) => {
         }
     };
 
+    const formatTimeSent = (timeSent: string): [string, string] => {
+        const [timePart] = timeSent.split('.');
+        const [hours, minutes, seconds] = timePart.split(':');
+        return [
+            `${hours}:${minutes}:${seconds}`,
+            new Date().toLocaleDateString()
+        ];
+    };
+
+    const [formattedTime, formattedDate] = formatTimeSent(light.timeSent);
+
     return (
         <>
             <Card 
@@ -88,7 +99,7 @@ const TrafficLightCard = ({ light, onDelete }: TrafficLightCardProps) => {
                         </div>
                         <div className={styles.detailItem}>
                             <Text type="secondary">last update:</Text>
-                            <Text>{light.timeSent}</Text>
+                            <Text>{formattedTime}</Text>
                         </div>
                     </div>
                 </div>
@@ -109,4 +120,4 @@ const TrafficLightCard = ({ light, onDelete }: TrafficLightCardProps) => {
     );
 };
 
-export default TrafficLightCard; 
+export default TrafficLightCard;

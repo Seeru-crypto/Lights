@@ -7,9 +7,9 @@
     --text-primary: #cdd6f4;
     --text-secondary: #a6adc8;
     --border-color: #45475a;
-    --success-color: #a6e3a1;
-    --warning-color: #f9e2af;
-    --error-color: #f38ba8;
+    --success-color: #9fdb57;
+    --warning-color: #f7d996;
+    --error-color: #ee5882;
     
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;

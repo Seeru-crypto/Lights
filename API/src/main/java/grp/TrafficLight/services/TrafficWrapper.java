@@ -76,7 +76,7 @@ public class TrafficWrapper extends Thread {
     }
 
     private void log(String status) {
-         log.info("light_id : " + trafficLight.getLightId() + " thread_id : " + Thread.currentThread().threadId() + " " + status);
+         // log.info("light_id : " + trafficLight.getLightId() + " thread_id : " + Thread.currentThread().threadId() + " " + status);
     }
 
     public void stopThread() {

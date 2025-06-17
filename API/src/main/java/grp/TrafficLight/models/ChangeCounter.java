@@ -41,7 +41,7 @@ public class ChangeCounter {
         catch (InterruptedException e) {
             log.error("ChangeCounter exception with ", e);
         }
-        log.info("CHANGE LOG light id " + latestChangeLightId +" nr changes " + numberOfChanges + " color "+ newColor );
+        // log.info("CHANGE LOG light id " + latestChangeLightId +" nr changes " + numberOfChanges + " color "+ newColor );
     }
 
     @Setter
